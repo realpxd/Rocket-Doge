@@ -198,7 +198,7 @@ function animate() {
   window.requestAnimationFrame(animate);
 }	
 
-	if(gameOverSound.readyState === 4 && bgMusic.readyState === 4 && jumpSound.readyState === 4){
+	if(gameOverSound.readyState == 4 && bgMusic.readyState == 4 && jumpSound.readyState == 4){
 		for(var i = 25; i<=90; i++){
 			progress.setAttribute("value", i)
 		}
@@ -344,18 +344,22 @@ function start(){
 	    a-=2;
 	    a2-=2;
 		
-		for(var i = 0; i<=h; i++){
-		//alert(" Game over ")
-		if (a + w >= x - s && a2 <= x + s && (b + h >= y - s || b2 <= y + s)) {
-			alert(" Game Over ");
-			context.clearRect(0, 0, cx, cy);
-			location.reload();
-			return;
-			bgMusic.pause();			
-			gameOverSound.play();
-		}}
-		
   		window.requestAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )});
+    	
+    	for(var i = 0; i<=h; i++){
+	    	if (a + w >= x - s && a2 <= x + s && (b + h >= y - s || b2 <= y + s)) {
+		    	context.clearRect(0, 0, cx, cy);
+		    	//window.cancelAnimationFrame(draw)
+		    	//window.cancelAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )})
+		    	//window.cancelAnimationFrame(loopObs)
+    	
+		    	gameOverSound.play();
+		    	bgMusic.pause();
+		    	alert(" Game Over ");	
+		    	location.reload();		
+		    	return;
+	    	}
+	    }
     }
     
     function loopObs(){
