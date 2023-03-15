@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style type="text/css">
+body {
+   background-color: purple;
+   overflow:hidden;
+}
+canvas {
+    width: 100%;
+    height: 97vh;
+    background-color: black;
+ /*   background: url('assets/img/bg.png');
+    background-position: center;
+    background-size: cover;
+    background-origin: content-box;*/
+    border-radius: 1rem;
+}
+#loader{
+	display:grid;
+	position:absolute;
+	place-items:center;
+	grid-template-columns:auto;
+	width:100vw;
+	height:100vw;
+	margin:auto;
+	padding-top:20rem;
+}
+#loader img{
+	position:absolute;
+	height:15rem;
+	width:6rem;
+	margin-top:-7rem;
+	animation:squeeze 0.9s ease-in-out infinite alternate-reverse;
+}
+#progressBar{
+	height:4rem;
+	width:80vw;
+	margin-right:1rem;
+}
+#progressBar:after{
+	content:" Loading game files... ";
+	position:relative;
+	top:5rem;
+	left:6rem;
+	color:white;
+	text-align:center;
+}
+#musicBtn{
+	display:block;
+	position:absolute;
+	bottom:2rem;
+	right:2rem;
+	padding:0.8rem;
+	border:none;
+	outline:none;
+	color:white;
+	letter-spacing:0.1rem;
+	font-weight:500;
+	background-color:fuchsia;
+	border-radius:0.4rem;
+}
+#musicBtn:active{
+	box-shadow:inset 4px 2px black;
+}
+@keyframes squeeze {
+	from{}
+	to{width:4rem; height:20rem;}
+}
+</style>
+</head>
+<body>
+	<div id="loader">
+		<img src="./assets/img/obs.png">
+		<progress id="progressBar" value="10" min="0" max="100"></progress>
+    </div>
+    <button id="musicBtn">music</button>
+    <canvas id="canvas" width="400" height="800">
+  Your browser does not support the HTML5 canvas tag.
+    
+    </canvas>
+
+
+
+<script defer>
+const player = new Image();
+player.src = './assets/img/player.webp';
+
+const player2 = new Image();
+player2.src = './assets/img/player2.webp';
+
+const obsImg = new Image();
+obsImg.src = './assets/img/obs.png';
+
+const bg = new Image();
+bg.src = './assets/img/bg.jpg';
+
+
+const jumpSound = new Audio();
+jumpSound.src = "./assets/sounds/jump.mp3"
+
+const gameOverSound = new Audio();
+gameOverSound.src = "./assets/sounds/gameover.mp3"
+
+const uiSound = new Audio();
+uiSound.src = "./assets/sounds/clickui.ogg"
+
+const bgMusic = new Audio();
+bgMusic.src = "./assets/sounds/bg-music.ogg"
+
+window.onload = function() {
+
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    
+    var cx = canvas.width;
+    var cy = canvas.height;
+    
+    var s = (cx/2) - (cy/5);
+    var x = cx/4;
+    var y = cy/3;
+    
+    var fs = (cx/2) - (cy/5);
+    var fx = cx/4.5;
+    var fy = cy/8;
+    
+    var t;
+    var timePassed;
+    var speed = 70;
+    var incSpeed = 1;
+
+	var progress = document.getElementById("progressBar");
+	var loader = document.getElementById("loader");
+
+
+const spriteWidth = bg.width;
+const spriteHeight = bg.height;
+
+let currentSprite = 0;
+let bx = 0;
+
+var musicBtn = document.getElementById("musicBtn");
+musicBtn.addEventListener("click", function(){
+if(bgMusic.paused){
+bgMusic.play()
+}else{
+bgMusic.pause()
+}
+})
+
+function animate() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.drawImage(
+    bg,
+    currentSprite * spriteWidth,
+    0,
+    spriteWidth,
+    spriteHeight,
+    bx,
+    0,
+    spriteWidth,
+    spriteHeight
+  );
+  
+  if (bx <= -spriteWidth + 500) {
+    bx = 0;
+    currentSprite = 0;
+  }
+
+  bx -= 0.03;
+
+  if (bx < spriteWidth * (currentSprite - 1)) {
+    currentSprite--;
+  }
+  window.requestAnimationFrame(animate);
+}	
+
+	if(gameOverSound.readyState === 4 && bgMusic.readyState === 4 && jumpSound.readyState === 4){
+		for(var i = 25; i<=90; i++){
+			progress.setAttribute("value", i)
+		}
+	}
+	
+	if(progress.getAttribute("value") == 90){
+		loader.style.display = "none"
+		homeScreen()
+	}
+	function homeScreen(){
+	context.drawImage(
+	bg,
+	currentSprite * spriteWidth,
+	0,
+	spriteWidth,
+	spriteHeight,
+	bx,
+	0,
+	spriteWidth,
+	spriteHeight
+	);
+
+    context.beginPath();
+    context.drawImage(player , x-s ,y ,s*3 , s*3);
+    context.stroke();
+	
+	context.font = "700 " + fs + 'px Verdana';
+	context.fillStyle = 'red';
+	context.fillText("F l y   T o ", fx, fy);
+	context.fillStyle = 'pink';
+	context.fillText(" M o o n ", fx + fx + fs, fy+fs+fs);
+	
+	context.font = "300 " + fs/1.5 + 'px Courier New';
+	context.fillStyle = 'pink';
+	context.fillText("Click anywhere to", fx-s, fx*6);
+	context.fillText("start the game", fx-s , fx*6.5);
+	}
+
+    let c = 0;
+let ty = 0;
+    function draw(){
+
+    	
+        document.onkeydown = function() {
+            c += 1;
+            //console.log("// " + x, y + " click");
+            y -= 60
+            if(c%5==0 && c!=0){
+                speed = incSpeed + 25;
+                speed++;
+                incSpeed += 2;
+            }
+            	jumpSound.play()
+        }
+
+        document.ontouchstart = function() {
+            c += 1;
+            //console.log("// " + x, y + " click");
+            y -= 60
+            ty = y;
+            ty-=1
+            if(c%5==0 && c!=0){
+                speed = incSpeed + 25;
+                speed++;
+                incSpeed += 2;
+            }
+            	jumpSound.play()
+        }
+        
+        var intSpeed = Math.ceil(speed)
+        timePassed = (Date.now() - t) / 1000;
+        t = Date.now();
+        
+        if (y <= cy) {
+            speed += 70 * timePassed;
+            y += speed * timePassed;
+        }
+        
+        if (y > cy) {
+            c = 0
+            y = 250
+            speed = incSpeed - x
+        }
+    
+        if(y <= cy/18){
+            y = cy/18;
+        }
+        
+        context.clearRect(0, 0, cx, cy);
+		
+		animate();
+		
+
+		
+		
+      /*  context.beginPath();
+        context.arc(x, y, s, 0, 2 * Math.PI);
+        context.fillStyle = "red";
+        context.fill(); */
+	//console.log(ty + " " + y)
+        /*if (y > ty) {
+        	context.beginPath();
+        	context.drawImage(player2 , x-s ,y ,s*3 , s*3);
+        	context.stroke();
+        	ty+=45
+        }else{*/
+        	context.beginPath();
+        	context.drawImage(player , x-s ,y ,s*3 , s*3);
+        	context.stroke();
+        //}
+        context.font = (fx/cx+fy-s-s) + 'px Arial';
+        context.fillStyle = 'purple';
+        context.fillText("Count: " + c, fx - fs, fy - fx + fs);
+        
+        context.font = (fx/cx+fy-s-s) + 'px Arial';
+        context.fillStyle = 'fuschia';
+        context.fillText("Speed: " + intSpeed, cx - fx - s , fy - fx + fs);
+	
+        window.requestAnimationFrame(draw);
+    }
+    
+function start(){
+	 t = Date.now();
+	 timePassed = 0;
+    draw()
+
+
+    
+    function obs(a, a2, b, b2, w , h , w2 , h2 ){
+	    //console.log("// " + "a : " + a + " , a2 : " + a2 + " , b : " + b + " , b2 : " + b2 + " , w : " + w + " , h : " + h + " , w2 : " + w2 + " , h2 : " + h2 );
+	    
+	    context.beginPath();
+	    context.drawImage(obsImg , a ,b ,w , h);
+	    context.stroke();
+    
+	    context.beginPath();
+	    context.drawImage(obsImg, a2, b2 ,w2 , h2);
+	    context.stroke();
+    
+	    a-=2;
+	    a2-=2;
+		
+		for(var i = 0; i<=h; i++){
+		//alert(" Game over ")
+		if (a + w >= x - s && a2 <= x + s && (b + h >= y - s || b2 <= y + s)) {
+			alert(" Game Over ");
+			context.clearRect(0, 0, cx, cy);
+			location.reload();
+			return;
+			bgMusic.pause();			
+			gameOverSound.play();
+		}}
+		
+  		window.requestAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )});
+    }
+    
+    function loopObs(){
+    	
+    	var h = Math.floor(Math.random() * (cy-cy/1.8));
+    	var w = 50;
+    	
+    	var h2 = Math.floor(Math.random() * (cy-cy/1.5));
+    	var w2 = 50;
+    	
+    	var a = 510;
+    	var b = 0;
+    	
+    	var a2 = 550;
+    	var b2 = cy - h2;
+    	obs(a, a2, b, b2, w , h , w2 , h2 );
+		
+    }
+    setInterval(loopObs, 2500)
+	}
+	
+		document.ontouchstart = start
+}
+
+
+</script>
+</body>
+</html>
