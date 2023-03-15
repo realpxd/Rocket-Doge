@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Moon</title>
+<title>Fly to Moon</title>
 <!-- X-icon -->
 <link rel="icon" href="./assets/img/banner.webp" type="image/x-icon">
 <!-- Meta tags -->
@@ -99,8 +99,7 @@ canvas {
     </div>
     <button id="musicBtn">music</button>
     <canvas id="canvas" width="400" height="800">
-  Your browser does not support the HTML5 canvas tag.
-    
+ 		 Your browser does not support the HTML5 canvas tag.
     </canvas>
 
 
@@ -204,12 +203,15 @@ function animate() {
 			progress.setAttribute("value", i)
 		}
 	}
-	
+	//console.log(progress.getAttribute("value"))
 	if(progress.getAttribute("value") == 90){
-		loader.style.display = "none"
+		loader.style.display = "none";
 		homeScreen()
 	}
+	
+	
 	function homeScreen(){
+		document.ontouchstart = start
 	context.drawImage(
 	bg,
 	currentSprite * spriteWidth,
@@ -375,7 +377,7 @@ function start(){
     setInterval(loopObs, 2500)
 	}
 	
-		document.ontouchstart = start
+
 }
 
 
