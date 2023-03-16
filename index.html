@@ -198,7 +198,7 @@ function animate() {
   window.requestAnimationFrame(animate);
 }	
 
-	if(gameOverSound.readyState == 4 && bgMusic.readyState == 4 && jumpSound.readyState == 4){
+	if(gameOverSound.readyState == 4 || bgMusic.readyState == 4 || jumpSound.readyState == 4){
 		for(var i = 25; i<=90; i++){
 			progress.setAttribute("value", i)
 		}
