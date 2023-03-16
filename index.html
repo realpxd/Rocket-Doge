@@ -48,6 +48,7 @@ canvas {
 	height:100vw;
 	margin:auto;
 	padding-top:20rem;
+	overflow:hidden;
 }
 #loader img{
 	position:absolute;
@@ -204,17 +205,22 @@ function animate() {
 
 // Loading & Home Screen Setup
 	// Loading Screen
-	if(gameOverSound.readyState == 4 || bgMusic.readyState == 4 || jumpSound.readyState == 4){
+	// Not working poperly after page refresh
+	/*if(gameOverSound.readyState == 4 || bgMusic.readyState == 4 || jumpSound.readyState == 4){
 		for(var i = 25; i<=90; i++){
 			progress.setAttribute("value", i)
 		}
 	}else{
 		console.log("//Failed to load files")
-	}
+	}*/
+	// Manually setting it up
+	setTimeout(function(){
+	progress.setAttribute("value", 90)
 	if(progress.getAttribute("value") == 90){
 		loader.style.display = "none";
 		homeScreen()
 	}
+	}, 1000)
 	
 	// Render / Play game function
 	var rendering = false;	
@@ -377,7 +383,7 @@ function start(){
     	// Check collision for Game Over
 	    	if (a + w >= x - s && a2 <= x + s && (b + h >= y - s || b2 <= y + s)) {
 		    	context.clearRect(0, 0, cx, cy);
-		    	
+		 		window.requestAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )});
 		    	//window.cancelAnimationFrame(draw)
 		    	//window.cancelAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )})
 		    	//window.cancelAnimationFrame(loopObs)
