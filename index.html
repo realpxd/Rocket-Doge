@@ -382,8 +382,8 @@ function start(){
 
     	// Check collision for Game Over
 	    	if (a + w >= x - s && a2 <= x + s && (b + h >= y - s || b2 <= y + s)) {
-		    	context.clearRect(0, 0, cx, cy);
-		 		window.requestAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )});
+		    	//context.clearRect(0, 0, cx, cy);
+		 		//window.requestAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )});
 		    	//window.cancelAnimationFrame(draw)
 		    	//window.cancelAnimationFrame(function() {obs(a, a2, b, b2, w , h , w2 , h2 )})
 		    	//window.cancelAnimationFrame(loopObs)
@@ -391,8 +391,9 @@ function start(){
     	    	bgMusic.pause();
 		    	gameOverSound.play();
 		    	console.log(" Game Over ");	
-		    	location.reload();		
-		    	return;
+		    	setTimeout(function(){location.reload();}, 700)
+		    			
+		    	//return;
 	    }
     }
     
