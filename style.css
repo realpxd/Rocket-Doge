@@ -1,0 +1,135 @@
+
+body {
+    background-color: purple;
+    overflow:hidden;
+ }
+ canvas {
+     display: block;
+     width: 100%;
+     height: 97vh;
+     background-color: black;
+  /*   background: url('assets/img/bg.png');
+     background-position: center;
+     background-size: cover;
+     background-origin: content-box;*/
+     border-radius: 1rem;
+     margin: auto;
+ }
+ #loader{
+     display:grid;
+     position:absolute;
+     place-items:center;
+     grid-template-columns:auto;
+     width:100vw;
+     height:100vw;
+     margin:auto;
+     padding-top:20rem;
+     overflow:hidden;
+ }
+ #loader img{
+     position:absolute;
+     height:15rem;
+     width:6rem;
+     margin-top:-7rem;
+     animation:squeeze 0.9s ease-in-out infinite alternate-reverse;
+ }
+ #progressBar{
+     height:4rem;
+     width:80vw;
+     margin-right:1rem;
+ }
+ #progressBar:after{
+     content:" Loading game files... ";
+     position:relative;
+     top:5rem;
+     left:6rem;
+     color:white;
+     text-align:center;
+ }
+ #musicBtn{
+     display:block;
+     position:absolute;
+     bottom:2rem;
+     right:2rem;
+     padding:0.8rem;
+     border:none;
+     outline:none;
+     color:white;
+     letter-spacing:0.1rem;
+     font-weight:500;
+     background-color:fuchsia;
+     border-radius:0.4rem;
+ }
+ #musicBtn:active{
+     box-shadow:inset 4px 2px black;
+ }
+ @keyframes squeeze {
+     from{}
+     to{width:4rem; height:20rem;}
+ }
+
+ 
+ .desk-controls-left , .desk-controls-right{
+    display: none;
+ }
+ @media screen and (min-width: 768px) {
+     canvas {
+         width: 30%;
+     }
+
+     .desk-controls-left , .desk-controls-right{
+        display: flex;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 30%;
+        border-radius: 2rem;
+        height: fit-content;
+        background-color: rgba(6, 23, 79, 0.925);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-family: poppins;
+        text-decoration: underline;
+        
+     }
+     .desk-controls-left div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        margin:auto;
+     }
+     .desk-controls-left div img{
+        width: 60%;
+        height: 29vh;
+        object-fit: contain;
+     }
+     .desk-controls-left div img:first-of-type{
+        width: 20%;
+     }
+
+     .desk-controls-right{
+        left: unset;
+        right: 1rem;
+        text-align: center;
+     }
+     .desk-controls-right img{
+        width: 100%;
+        height: 30vh;
+        object-fit: contain;
+     }
+
+     
+ #musicBtn{
+    padding:1rem 1.5rem;
+    font-size: 1.3rem;
+    font-family: poppins;
+    cursor: pointer;
+}
+
+ }
+    
+
